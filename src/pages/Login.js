@@ -14,7 +14,7 @@ function Login() {
             const response = await login(userData);
             console.log("--------------------------------")
             console.log(response);
-            if (response.headers) {
+            if (response.token) {
                 localStorage.setItem('authToken', response.token);
             }
         } catch (error) {

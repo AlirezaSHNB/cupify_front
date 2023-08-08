@@ -2,7 +2,6 @@
 import './App.css';
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
-// import React from 'react';
 import SignUp from './pages/SignUp';
 import Home from './pages/Home';
 import Cups from './components/Cups';
@@ -14,17 +13,20 @@ function App() {
 
   useEffect(() => {
       fetchCurrentUser()
-          .then(data => {
-              console.log(data)
-              setCurrentUser(data.user);
+          .then(response => {
+              if (response.ok) {
+                setCurrentUser(response.json());
+              } else {
+                setCurrentUser(null);
+              }
           }).catch(error => console.error('Error fetching user data:', error));
   }, []);
 
   const handleLogout = async () => {
       try {
-          const response = await logout();
-          console.log(response); // Handle the response accordingly
-          setCurrentUser(null); // Reset the currentUser state
+          const response = await logout().json();
+          console.log(response);
+          setCurrentUser(null);
       } catch (error) {
           console.error('Error logging out:', error);
       }
@@ -39,6 +41,7 @@ function App() {
               <Link to="/">Home</Link>
             </li>
             <li>
+              {console.log(currentUser)}
               {currentUser ? (
                 <button onClick={handleLogout}>Logout</button>
               ) : (

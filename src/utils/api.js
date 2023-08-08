@@ -26,13 +26,18 @@ export async function login(userData) {
 }
 
 export async function logout() {
+    const token = localStorage.getItem('authToken');
+
     const response = await fetch(`${BASE_URL}/logout`, {
-        method: 'POST',
+        method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
+            'Authorization': `${token}`,
         },
     });
-
+    if (response.ok) {
+        localStorage.clear('authToken');
+    }
     return response.json();
 }
 
@@ -46,7 +51,7 @@ export async function fetchCurrentUser() {
         },
     });
 
-    return response.json();
+    return response;
 }
 
 export async function fetchCups() {
