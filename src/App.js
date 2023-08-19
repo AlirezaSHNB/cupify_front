@@ -37,24 +37,23 @@ function App() {
       <div className="App">
         <nav>
           <ul>
-            <li>
+            <p>
               <Link to="/">Home</Link>
-            </li>
-            <li>
-              {console.log(currentUser)}
+            </p>
+            <p>
               {currentUser ? (
                 <button onClick={handleLogout}>Logout</button>
               ) : (
-                <li>
+                <p>
                   <Link to="/signup">Sign Up</Link>
-                  / 
+                  /
                   <Link to="/login">Login</Link>
-                </li>
+                </p>
               )}
-            </li>
-            <li>
+            </p>
+            <p>
               <Link to="/cups">Cups</Link>
-            </li>
+            </p>
           </ul>
         </nav>
 

@@ -12,7 +12,6 @@ function Login() {
 
         try {
             const response = await login(userData);
-            console.log("--------------------------------")
             console.log(response);
             if (response.token) {
                 localStorage.setItem('authToken', response.token);

@@ -65,8 +65,52 @@ export async function fetchCups() {
     return response.json();
 }
 
-export async function fetchHomeData() {
-    const response = await fetch(`${BASE_URL}/`, {
+export async function fetchCup(id) {
+    const response = await fetch(`${BASE_URL}/cups/${id}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    });
+
+    return response.json();
+}
+
+export async function fetchTeams() {
+    const response = await fetch(`${BASE_URL}/participants`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    });
+
+    return response.json();
+}
+
+export async function fetchSinglePlayerTeams() {
+    const response = await fetch(`${BASE_URL}/participants/single_player_teams`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    });
+
+    return response.json();
+}
+
+export async function fetchMultiplePlayerTeams() {
+    const response = await fetch(`${BASE_URL}/participants/multiple_player_teams`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    });
+
+    return response.json();
+}
+
+export async function fetchPlayers() {
+    const response = await fetch(`${BASE_URL}/players`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',

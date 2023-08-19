@@ -7,11 +7,11 @@ function Cup() {
     const [cup, setCup] = useState(null);
 
     useEffect(() => {
-        fetchCupDetails(cupId)
+        fetchCup(cupId)
             .then(data => {
                 setCup(data.cup);
             })
-            .catch(error => console.error('Error fetching cup details:', error));
+            .catch(error => console.error('Error fetching cup:', error));
     }, [cupId]);
 
     return (
