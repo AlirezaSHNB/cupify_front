@@ -1,16 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { fetchPlayers } from '../utils/api';
+import { useNavigate } from 'react-router-dom';
 import '../index.css';
 
 function Players() {
     const [players, setPlayers] = useState([]);
+    const navigate = useNavigate()
 
     useEffect(() => {
-        fetchPlayers()
-        .then(data => {
-            setPlayers(data.players);
-        })
-        .catch(error => console.error('Error fetching players:', error));
+        const token = localStorage.getItem('authToken');
+        if (!!token) {
+            fetchPlayers()
+            .then(data => {
+                setPlayers(data.players);
+            })
+            .catch(error => console.error('Error fetching players:', error));
+        } else {
+            navigate('/login', { replace:true })
+        }
     }, []);
 
     return (

@@ -51,7 +51,10 @@ export async function fetchCurrentUser() {
         },
     });
 
-    return response;
+    let readable_content = await response.json()
+    let status = await response.status
+
+    return [status, readable_content];
 }
 
 export async function fetchCups() {

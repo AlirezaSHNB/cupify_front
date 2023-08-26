@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { login } from '../utils/api';
+import { useNavigate } from 'react-router-dom';
 
 function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-
+    const navigate = useNavigate()
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -15,6 +16,7 @@ function Login() {
             console.log(response);
             if (response.token) {
                 localStorage.setItem('authToken', response.token);
+                navigate('/')
             }
         } catch (error) {
             console.error('Error logging up:', error);

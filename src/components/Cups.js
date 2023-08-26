@@ -1,17 +1,28 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { fetchCups } from '../utils/api';
 import '../index.css';
 
 function Cups() {
     const [cups, setCups] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
-        fetchCups()
-        .then(data => {
-            setCups(data.cups);
-        })
-        .catch(error => console.error('Error fetching cups:', error));
+        const token = localStorage.getItem('authToken');
+        if (!!token) {
+            fetchCups()
+            .then(data => {
+                setCups(data.cups);
+            })
+            .catch(error => console.error('Error fetching cups:', error));
+        } else {
+            navigate('/login', { replace:true })
+        }
     }, []);
+
+    const handleShowCup = (cupId) => {
+        navigate(`/cups/${cupId}`);
+    };
 
     return (
         <div>
@@ -38,7 +49,7 @@ function Cups() {
                             <td>{ cup.end_date }</td>
                             <td>{ cup.winner?.name }</td>
                             <td>
-                                <button class="show-button" onclick={`window.location.href='/cups/${cup.id}'`}>Show</button>
+                                <button className="show-button" onClick={() => handleShowCup(cup.id)}>Show</button>
                             </td>
                         </tr>
                     ))}

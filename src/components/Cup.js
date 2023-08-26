@@ -1,17 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { fetchCup } from '../api';
+import { fetchCup } from '../utils/api';
+import { useNavigate } from 'react-router-dom';
 
 function Cup() {
     const { cupId } = useParams();
     const [cup, setCup] = useState(null);
+    const navigate = useNavigate()
 
     useEffect(() => {
-        fetchCup(cupId)
-            .then(data => {
-                setCup(data.cup);
-            })
-            .catch(error => console.error('Error fetching cup:', error));
+        const token = localStorage.getItem('authToken');
+        if (!!token) {
+            fetchCup(cupId)
+                .then(data => {
+                    setCup(data.cup);
+                })
+                .catch(error => console.error('Error fetching cup:', error));
+        } else {
+            navigate('/login', { replace:true })
+        }
     }, [cupId]);
 
     return (

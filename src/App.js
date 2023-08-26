@@ -1,31 +1,38 @@
 // import logo from './logo.svg';
 import './App.css';
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import { Link, Route, Routes ,useNavigate} from 'react-router-dom';
 import SignUp from './pages/SignUp';
 import Home from './pages/Home';
 import Cups from './components/Cups';
+import Cup from './components/Cup';
 import Login from './pages/Login';
 import { fetchCurrentUser, logout } from './utils/api';
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
+  const navigate = useNavigate()
 
   useEffect(() => {
+    const token = localStorage.getItem('authToken');
+    if (!!token) {
       fetchCurrentUser()
-          .then(response => {
-              if (response.ok) {
-                setCurrentUser(response.json());
-              } else {
-                setCurrentUser(null);
-              }
-          }).catch(error => console.error('Error fetching user data:', error));
-  }, []);
+            .then(response => {
+                if (response[0] === 200) {
+                  setCurrentUser(response[1]);
+                } else {
+                  setCurrentUser(null);
+                }
+            }).catch(error => console.error('Error fetching user data:', error));
+    } else {
+      navigate('/login', { replace:true })
+    }
+  }, [navigate]);
 
   const handleLogout = async () => {
       try {
-          const response = await logout().json();
-          console.log(response);
+          const response = await logout();
+          console.log(response)
           setCurrentUser(null);
       } catch (error) {
           console.error('Error logging out:', error);
@@ -33,38 +40,46 @@ function App() {
   };
 
   return (
-    <Router>
       <div className="App">
         <nav>
           <ul>
             <p>
-              <Link to="/">Home</Link>
+              <Link to="/">
+                <button className="show-button">Home</button>
+              </Link>
             </p>
             <p>
               {currentUser ? (
-                <button onClick={handleLogout}>Logout</button>
+                <>
+                  <button className="show-button" onClick={handleLogout}>Logout</button>
+                </>
               ) : (
                 <p>
-                  <Link to="/signup">Sign Up</Link>
-                  /
-                  <Link to="/login">Login</Link>
+                  <Link to="/signup">
+                    <button className="show-button">Sign Up</button>
+                  </Link>
+                  &nbsp;
+                  <Link to="/login">
+                    <button className="show-button">Login</button>
+                  </Link>
                 </p>
               )}
-            </p>
-            <p>
-              <Link to="/cups">Cups</Link>
             </p>
           </ul>
         </nav>
 
         <Routes>
           <Route path="/signup" element={<SignUp/>} />
-          <Route path="/login" element={<Login/>} />
           <Route path="/cups" element={<Cups/>} />
+          <Route path="/cups/:cupId" element={<Cup />} />
+          <Route path="/teams" element={<Teams />} />
+          <Route path="/teams/:teamId" element={<Team />} />
+          <Route path="/players" element={<Players />} />
+          <Route path="/players/:playerId" element={<Player />} />
+          <Route path="/login" element={<Login setCurrentUser={setCurrentUser} currentUser={currentUser} />} />
           <Route path="/" element={<Home/>} />
         </Routes>
       </div>
-    </Router>
   );
 }
 

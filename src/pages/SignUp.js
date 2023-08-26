@@ -15,7 +15,7 @@ function SignUp() {
 
         try {
             const response = await signUp(userData);
-            console.log(response); // Handle the response accordingly
+            console.log(response);
             if (response.token) {
                 localStorage.setItem('authToken', response.token);
             }
