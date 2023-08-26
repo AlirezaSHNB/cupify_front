@@ -71,11 +71,11 @@ function App() {
         <Routes>
           <Route path="/signup" element={<SignUp/>} />
           <Route path="/cups" element={<Cups/>} />
-          <Route path="/cups/:cupId" element={<Cup />} />
-          <Route path="/teams" element={<Teams />} />
+          <Route path="/cups/:cupId" element={<Cup />} /> 
+          {/* <Route path="/teams" element={<Teams />} />
           <Route path="/teams/:teamId" element={<Team />} />
           <Route path="/players" element={<Players />} />
-          <Route path="/players/:playerId" element={<Player />} />
+          <Route path="/players/:playerId" element={<Player />} /> */}
           <Route path="/login" element={<Login setCurrentUser={setCurrentUser} currentUser={currentUser} />} />
           <Route path="/" element={<Home/>} />
         </Routes>
