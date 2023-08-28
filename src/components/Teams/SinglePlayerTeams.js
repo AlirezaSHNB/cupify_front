@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { fetchSinglePlayerTeams } from '../../utils/api';
 import '../../index.css';
 
-function SinglePlayerTeams() {
-    const [single_player_teams, setSinglePlayerTeams] = useState([]);
+function SinglePlayerTeams({ numToShow }) {
+    const [singlePlayerTeams, setSinglePlayerTeams] = useState([]);
+    const navigate = useNavigate();
+    const singlePlayerTeamsToDisplay = numToShow !== undefined ? singlePlayerTeams.slice(0, numToShow) : singlePlayerTeams;
 
     useEffect(() => {
         fetchSinglePlayerTeams()
@@ -12,6 +15,10 @@ function SinglePlayerTeams() {
         })
         .catch(error => console.error('Error fetching single player teams:', error));
     }, []);
+
+    const handleShowTeam = (teamId) => {
+        navigate(`/teams/${teamId}`);
+    };
 
     return (
         <div>
@@ -24,11 +31,11 @@ function SinglePlayerTeams() {
                     </tr>
                 </thead>
                 <tbody>
-                    {single_player_teams.map(team => (
+                    {singlePlayerTeamsToDisplay.map(team => (
                         <tr>
                             <td>{ team.name }</td>
                             <td>
-                                <button class="show-button" onclick={`window.location.href='/teams/${team.id}'`}>Show</button>
+                                <button class="show-button" onClick={() => handleShowTeam(team.id)}>Show</button>
                             </td>
                         </tr>
                     ))}

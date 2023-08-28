@@ -4,8 +4,12 @@ import React, { useState, useEffect } from 'react';
 import { Link, Route, Routes ,useNavigate} from 'react-router-dom';
 import SignUp from './pages/SignUp';
 import Home from './pages/Home';
-import Cups from './components/Cups';
-import Cup from './components/Cup';
+import Cups from './components/Cups/Cups';
+import Cup from './components/Cups/Cup';
+import Teams from './components/Teams';
+import Team from './components/Teams/Team';
+import Players from './components/Players/Players';
+import Player from './components/Players/Player';
 import Login from './pages/Login';
 import { fetchCurrentUser, logout } from './utils/api';
 
@@ -72,10 +76,10 @@ function App() {
           <Route path="/signup" element={<SignUp/>} />
           <Route path="/cups" element={<Cups/>} />
           <Route path="/cups/:cupId" element={<Cup />} /> 
-          {/* <Route path="/teams" element={<Teams />} />
+          <Route path="/teams" element={<Teams />} />
           <Route path="/teams/:teamId" element={<Team />} />
           <Route path="/players" element={<Players />} />
-          <Route path="/players/:playerId" element={<Player />} /> */}
+          <Route path="/players/:playerId" element={<Player />} />
           <Route path="/login" element={<Login setCurrentUser={setCurrentUser} currentUser={currentUser} />} />
           <Route path="/" element={<Home/>} />
         </Routes>

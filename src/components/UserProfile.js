@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { fetchCurrentUser, logout } from '../utils/api';
+import { fetchCurrentUser } from '../utils/api';
 import { useNavigate } from 'react-router-dom';
 
 function UserProfile() {
@@ -22,16 +22,6 @@ function UserProfile() {
         }
     }, []);
 
-    const handleLogout = async () => {
-        try {
-            const response = await logout();
-            console.log(response);
-            setCurrentUser(null);
-        } catch (error) {
-            console.error('Error logging out:', error);
-        }
-    };
-
     return (
         <div>
             <h2>User Profile</h2>
@@ -39,7 +29,6 @@ function UserProfile() {
                 <p>Username: {currentUser.username}</p>
                 <p>Email: {currentUser.email}</p>
                 {/* Display other user data */}
-                <button onClick={handleLogout}>Logout</button>
             </div>
         </div>
     );

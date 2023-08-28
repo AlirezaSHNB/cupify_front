@@ -90,6 +90,17 @@ export async function fetchTeams() {
     return response.json();
 }
 
+export async function fetchTeam(id) {
+    const response = await fetch(`${BASE_URL}/participants/${id}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    });
+
+    return response.json();
+}
+
 export async function fetchSinglePlayerTeams() {
     const response = await fetch(`${BASE_URL}/participants/single_player_teams`, {
         method: 'GET',
@@ -122,3 +133,34 @@ export async function fetchPlayers() {
 
     return response.json();
 }
+
+export async function fetchPlayer(id) {
+    const response = await fetch(`${BASE_URL}/players/${id}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    });
+
+    return response.json();
+}
+
+export const createCup = async (cupData) => {
+    try {
+        const response = await fetch(`${BASE_URL}/cups`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(cupData),
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to create cup');
+        }
+
+        return true;
+    } catch (error) {
+        throw error;
+    }
+};

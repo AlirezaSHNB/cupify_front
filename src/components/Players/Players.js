@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { fetchPlayers } from '../utils/api';
+import { fetchPlayers } from '../../utils/api';
 import { useNavigate } from 'react-router-dom';
-import '../index.css';
+import '../../index.css';
 
-function Players() {
+function Players({ numToShow }) {
     const [players, setPlayers] = useState([]);
     const navigate = useNavigate()
+    const playersToDisplay = numToShow !== undefined ? players.slice(0, numToShow) : players;
 
     useEffect(() => {
         const token = localStorage.getItem('authToken');
@@ -18,7 +19,11 @@ function Players() {
         } else {
             navigate('/login', { replace:true })
         }
-    }, []);
+    }, [navigate]);
+
+    const handleShowPlayer = (playerId) => {
+        navigate(`/players/${playerId}`);
+    };
 
     return (
         <div>
@@ -35,7 +40,7 @@ function Players() {
                     </tr>
                 </thead>
                 <tbody>
-                    {players.map(player => (
+                    {playersToDisplay.map(player => (
                         <tr>
                             <td>{ player.username }</td>
                             <td>{ player.first_name }</td>
@@ -43,7 +48,7 @@ function Players() {
                             <td>{ player.nickname }</td>
                             <td>{ player.date_of_birth }</td>
                             <td>
-                                <button class="show-button" onclick={`window.location.href='/players/${player.id}'`}>Show</button>
+                                <button class="show-button" onClick={() => handleShowPlayer(player.id)}>Show</button>
                             </td>
                         </tr>
                     ))}

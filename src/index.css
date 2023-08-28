@@ -50,3 +50,85 @@ table tr:hover {
 .show-button:hover {
   background-color: #237d7a;
 }
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background-color: white;
+  border-radius: 5px;
+  padding: 20px;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
+  width: 800px;
+  border: 3px solid #237d7a;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.modal-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  font-size: 18px;
+  color: #888;
+}
+
+.modal-content button:hover,
+.modal-close:hover {
+  opacity: 0.8;
+}
+
+.modal-content label {
+  display: flex;
+  margin-right: 5px;
+  margin-bottom: 5px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  align-items: center;
+  gap: 10px;
+}
+
+.modal-content input,
+.modal-content select {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 8px;
+  margin-right: 15px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+.modal-content button[type="submit"] {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.input-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2px;
+  width: 350px
+}
+
+.modal-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+}

@@ -1,32 +1,32 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { fetchCup } from '../utils/api';
+import { fetchTeam } from '../../utils/api';
 import { useNavigate } from 'react-router-dom';
 
-function Cup() {
-    const { cupId } = useParams();
-    const [cup, setCup] = useState(null);
+function Team() {
+    const { teamId } = useParams();
+    const [team, setTeam] = useState(null);
     const navigate = useNavigate()
 
     useEffect(() => {
         const token = localStorage.getItem('authToken');
         if (!!token) {
-            fetchCup(cupId)
+            fetchTeam(teamId)
                 .then(data => {
-                    setCup(data.cup);
+                    setTeam(data.team);
                 })
-                .catch(error => console.error('Error fetching cup:', error));
+                .catch(error => console.error('Error fetching team:', error));
         } else {
             navigate('/login', { replace:true })
         }
-    }, [cupId]);
+    }, [teamId, navigate]);
 
     return (
         <div>
-            {cup ? (
+            {team ? (
                 <div>
-                    <h2>Cup</h2>
-                    <p>Name: {cup.name}</p>
+                    <h2>Team</h2>
+                    <p>Name: {team.name}</p>
                     {/* Display other cup details */}
                 </div>
             ) : (
@@ -36,4 +36,4 @@ function Cup() {
     );
 }
 
-export default Cup;
+export default Team;
