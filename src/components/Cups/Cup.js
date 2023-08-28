@@ -19,7 +19,7 @@ function Cup() {
         } else {
             navigate('/login', { replace:true })
         }
-    }, [cupId]);
+    }, [cupId, navigate]);
 
     return (
         <div>

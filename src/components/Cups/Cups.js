@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { fetchCups, createCup } from '../../utils/api';
-import CreateModal from './CreateModal';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import '../../index.css';
+import CreateModal from './CreateModal';
 
 function Cups({ numToShow }) {
     const [cups, setCups] = useState([]);
@@ -31,7 +29,6 @@ function Cups({ numToShow }) {
             fetchCups()
             .then(data => {
                 setCups(data.cups);
-                console.log(data.cups)
                 setFieldOptions(data.football_base_fields)
             })
             .catch(error => console.error('Error fetching cups:', error));
@@ -71,35 +68,19 @@ function Cups({ numToShow }) {
     };
 
     const handleSubmit = () => {
-        const errors = validateInputs(newCupData)
-        if (errors.length === 0) {
-            createCup(newCupData)
-                .then(() => {
-                    fetchCups()
-                        .then(data => {
-                            setCups(data.cups);
-                            console.log(data)
-                        })
-                        .catch(error => console.error('Error fetching cups:', error));
-                })
-                .catch(error => console.error('Error creating cup:', error));
-    
-            setIsModalOpen(false);
-        } else {
-            errors.forEach(error => {
-                toast.error(error);
-            });
-        }
+        createCup(newCupData)
+            .then(() => {
+                fetchCups()
+                    .then(data => {
+                        setCups(data.cups);
+                    })
+                    .catch(error => console.error('Error fetching cups:', error));
+            })
+            .catch(error => console.error('Error creating cup:', error));
     };
-
-    function validateInputs(newCupData) {
-        const errors = [];
-        return errors
-    }
 
     return (
         <div>
-            <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
             <h2>Cups</h2>
             <table>
                 <thead>
@@ -131,6 +112,7 @@ function Cups({ numToShow }) {
             </table>
             <br></br>
             <button className="show-button" onClick={() => handleShowCreateModal()}>Create New Cup</button>
+            <br></br>
 
             {isModalOpen && (
                 <CreateModal onClose={handleCloseModal}>
