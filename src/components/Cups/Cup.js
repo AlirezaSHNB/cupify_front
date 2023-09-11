@@ -14,6 +14,7 @@ function Cup() {
             fetchCup(cupId)
                 .then(data => {
                     setCup(data.cup);
+                    console.log(data.cup)
                 })
                 .catch(error => console.error('Error fetching cup:', error));
         } else {

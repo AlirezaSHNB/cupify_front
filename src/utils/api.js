@@ -1,5 +1,4 @@
-// Api.js
-const BASE_URL = 'http://localhost:3001'; // Update with your Rails API URL
+const BASE_URL = 'http://localhost:3001';
 
 export async function signUp(userData) {
     const response = await fetch(`${BASE_URL}/signup`, {

@@ -3,6 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { fetchCups, createCup } from '../../utils/api';
 import '../../index.css';
 import CreateModal from './CreateModal';
+import LeagueForm from './LeagueForm';
+import KnockoutForm from './KnockoutForm';
+import CombinationForm from './CombinationForm';
 
 function Cups({ numToShow }) {
     const [cups, setCups] = useState([]);
@@ -19,9 +22,35 @@ function Cups({ numToShow }) {
         min_number_of_participants: 0,
         max_number_of_participants: 0,
         type: '',
+        points_for_win: 0,
+        points_for_draw: 0,
+        points_for_lost: 0,
+        round_trip: false,
+        away_goal: false,
+        third_place_match: false,
+        win_order: ["points", "wins", "rounds_diff", "scores_diff", "face_to_face_match", "rounds", "scores", "red_cards", "yellow_cards", "fouls"]
     });
-
     const typeOptions = ['league', 'knockout', 'combination'];
+    const [step, setStep] = useState(1);
+
+    const handleNextStep = () => {
+        if (newCupData.type !== '') {
+            setStep(step + 1);
+        } else {
+            // Show an error message or prevent proceeding
+        }
+    };
+
+    const handleBackStep = () => {
+        setStep(step - 1);
+    };
+
+    const handleOrderChange = (newOrder) => {
+        setNewCupData({
+            ...newCupData,
+            win_order: newOrder,
+        });
+    };
 
     useEffect(() => {
         const token = localStorage.getItem('authToken');
@@ -67,12 +96,15 @@ function Cups({ numToShow }) {
         });
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        console.log(newCupData)
         createCup(newCupData)
             .then(() => {
                 fetchCups()
                     .then(data => {
                         setCups(data.cups);
+                        setIsModalOpen(false);
                     })
                     .catch(error => console.error('Error fetching cups:', error));
             })
@@ -116,106 +148,144 @@ function Cups({ numToShow }) {
 
             {isModalOpen && (
                 <CreateModal onClose={handleCloseModal}>
-                    <form className="modal-form" onSubmit={handleSubmit}>
-                        <div className="input-container">
-                            <label htmlFor="cupName">Cup Name</label>
-                            <input
-                                type="text"
-                                id="cupName"
-                                name="name"
-                                value={newCupData.name}
-                                onChange={handleInputChange}
-                                required
-                            />
+                    {step === 1 && (
+                        <div className="modal-form">
+                            <div className="input-container">
+                                <label htmlFor="cupName">Cup Name</label>
+                                <input
+                                    type="text"
+                                    id="cupName"
+                                    name="name"
+                                    value={newCupData.name}
+                                    onChange={handleInputChange}
+                                    required
+                                />
+                            </div>
+                            <div className="input-container">
+                                <label htmlFor="cupStartDate">Start Date</label>
+                                <input
+                                    type="date"
+                                    id="cupStartDate"
+                                    name="start_date"
+                                    value={newCupData.start_date}
+                                    onChange={handleInputChange}
+                                    required
+                                />
+                            </div>
+                            <div className="input-container">
+                                <label htmlFor="cupEndDate">End Date</label>
+                                <input
+                                    type="date"
+                                    id="cupEndDate"
+                                    name="end_date"
+                                    value={newCupData.end_date}
+                                    onChange={handleInputChange}
+                                    required
+                                />
+                            </div>
+                            <div className="input-container">
+                                <label htmlFor="cupField">Field</label>
+                                <select
+                                    id="cupField"
+                                    name="field"
+                                    value={newCupData.field}
+                                    onChange={handleInputChange}
+                                    required
+                                >
+                                    <option value="">Select a field</option>
+                                    {fieldOptions.map((option, index) => (
+                                        <option key={index} value={option}>{option}</option>
+                                    ))}
+                                </select>
+                            </div>
+                            <div className="input-container">
+                                <label htmlFor="cupNumberOfPlayers">Number of Players</label>
+                                <input
+                                    type="number"
+                                    id="cupNumberOfPlayers"
+                                    name="number_of_players"
+                                    value={newCupData.number_of_players}
+                                    onChange={handleInputChange}
+                                    required
+                                />
+                            </div>
+                            <div className="input-container">
+                                <label htmlFor="cupMinParticipants">Min Number of Participants</label>
+                                <input
+                                    type="number"
+                                    id="cupMinParticipants"
+                                    name="min_number_of_participants"
+                                    value={newCupData.min_number_of_participants}
+                                    onChange={handleInputChange}
+                                    required
+                                />
+                            </div>
+                            <div className="input-container">
+                                <label htmlFor="cupMaxParticipants">Max Number of Participants</label>
+                                <input
+                                    type="number"
+                                    id="cupMaxParticipants"
+                                    name="max_number_of_participants"
+                                    value={newCupData.max_number_of_participants}
+                                    onChange={handleInputChange}
+                                    required
+                                />
+                            </div>
+                            <div className="input-container">
+                                <label htmlFor="cupType">Type</label>
+                                <select
+                                    id="cupType"
+                                    name="type"
+                                    value={newCupData.type}
+                                    onChange={handleInputChange}
+                                    required
+                                >
+                                    <option value="">Select a type</option>
+                                    {typeOptions.map((option, index) => (
+                                        <option key={index} value={option}>{option}</option>
+                                    ))}
+                                </select>
+                            </div>
+                            
+                            <div className="modal-step">
+                                <button className="next-button" onClick={handleNextStep}>
+                                    Next
+                                </button>
+                            </div>
+                            {/* <button type="submit">Create Cup</button> */}
                         </div>
-                        <div className="input-container">
-                            <label htmlFor="cupStartDate">Start Date</label>
-                            <input
-                                type="date"
-                                id="cupStartDate"
-                                name="start_date"
-                                value={newCupData.start_date}
-                                onChange={handleInputChange}
-                                required
-                            />
+                    )}
+                    {step === 2 && (
+                        <div className="modal-step">
+                            <h3>Step 2: Fill Cup Details</h3>
+                            {newCupData.type === 'league' && (
+                                <LeagueForm
+                                    newCupData={newCupData}
+                                    handleInputChange={handleInputChange}
+                                    handleSubmit={handleSubmit}
+                                    handleBackStep={handleBackStep}
+                                    handleOrderChange={handleOrderChange}
+                                />
+                            )}
+                            {newCupData.type === 'knockout' && (
+                                <KnockoutForm
+                                    newCupData={newCupData}
+                                    handleInputChange={handleInputChange}
+                                    handleSubmit={handleSubmit}
+                                    handleBackStep={handleBackStep}
+                                />
+                            )}
+                            {newCupData.type === 'combination' && (
+                                <CombinationForm
+                                    newCupData={newCupData}
+                                    handleInputChange={handleInputChange}
+                                    handleSubmit={handleSubmit}
+                                    handleBackStep={handleBackStep}
+                                    handleOrderChange={handleOrderChange}
+                                />
+                            )}
                         </div>
-                        <div className="input-container">
-                            <label htmlFor="cupEndDate">End Date</label>
-                            <input
-                                type="date"
-                                id="cupEndDate"
-                                name="end_date"
-                                value={newCupData.end_date}
-                                onChange={handleInputChange}
-                                required
-                            />
-                        </div>
-                        <div className="input-container">
-                            <label htmlFor="cupField">Field</label>
-                            <select
-                                id="cupField"
-                                name="field"
-                                value={newCupData.field}
-                                onChange={handleInputChange}
-                                required
-                            >
-                                <option value="">Select a field</option>
-                                {fieldOptions.map((option, index) => (
-                                    <option key={index} value={option}>{option}</option>
-                                ))}
-                            </select>
-                        </div>
-                        <div className="input-container">
-                            <label htmlFor="cupNumberOfPlayers">Number of Players</label>
-                            <input
-                                type="number"
-                                id="cupNumberOfPlayers"
-                                name="number_of_players"
-                                value={newCupData.number_of_players}
-                                onChange={handleInputChange}
-                                required
-                            />
-                        </div>
-                        <div className="input-container">
-                            <label htmlFor="cupMinParticipants">Min Number of Participants</label>
-                            <input
-                                type="number"
-                                id="cupMinParticipants"
-                                name="min_number_of_participants"
-                                value={newCupData.min_number_of_participants}
-                                onChange={handleInputChange}
-                                required
-                            />
-                        </div>
-                        <div className="input-container">
-                            <label htmlFor="cupMaxParticipants">Max Number of Participants</label>
-                            <input
-                                type="number"
-                                id="cupMaxParticipants"
-                                name="max_number_of_participants"
-                                value={newCupData.max_number_of_participants}
-                                onChange={handleInputChange}
-                                required
-                            />
-                        </div>
-                        <div className="input-container">
-                            <label htmlFor="cupType">Type</label>
-                            <select
-                                id="cupType"
-                                name="type"
-                                value={newCupData.type}
-                                onChange={handleInputChange}
-                                required
-                            >
-                                <option value="">Select a type</option>
-                                {typeOptions.map((option, index) => (
-                                    <option key={index} value={option}>{option}</option>
-                                ))}
-                            </select>
-                        </div>
-                        
-                        <button type="submit">Create Cup</button>
-                    </form>
+                    )}
                 </CreateModal>
             )}
         </div>
