@@ -63,12 +63,32 @@ function CombinationForm({ newCupData, handleInputChange, handleSubmit, handleBa
                 />
             </div>
             <div className="input-container">
-                <label htmlFor="roundTrip">Round Trip</label>
+                <label htmlFor="roundTripGroup">Round Trip Group</label>
                 <input
                     type="checkbox"
-                    id="roundTrip"
-                    name="round_trip"
-                    checked={newCupData.round_trip}
+                    id="roundTripGroup"
+                    name="round_trip_group"
+                    checked={newCupData.round_trip_group}
+                    onChange={handleInputChange}
+                />
+            </div>
+            <div className="input-container">
+                <label htmlFor="roundTripKnockout">Round Trip Knockout</label>
+                <input
+                    type="checkbox"
+                    id="roundTripKnockout"
+                    name="round_trip_knockout"
+                    checked={newCupData.round_trip_knockout}
+                    onChange={handleInputChange}
+                />
+            </div>
+            <div className="input-container">
+                <label htmlFor="roundTripFinal">Round Trip Final</label>
+                <input
+                    type="checkbox"
+                    id="roundTripFinal"
+                    name="round_trip_final"
+                    checked={newCupData.round_trip_final}
                     onChange={handleInputChange}
                 />
             </div>

@@ -66,7 +66,7 @@ function LeagueForm({ newCupData, handleInputChange, handleSubmit, handleBackSte
                     type="checkbox"
                     id="roundTrip"
                     name="round_trip"
-                    checked={newCupData.round_trip}
+                    checked={newCupData.round_trip_group}
                     onChange={handleInputChange}
                 />
             </div>

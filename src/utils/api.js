@@ -163,3 +163,43 @@ export const createCup = async (cupData) => {
         throw error;
     }
 };
+
+export const addTeamToCup = async (cupId, teamId) => {
+    try {
+        const response = await fetch(`${BASE_URL}/cups/${cupId}/add_team`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({team_id: teamId}),
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to add team with id=' + teamId + 'from cup with id=' + cupId);
+        }
+
+        return true;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const removeTeamFromCup = async (cupId, teamId) => {
+    try {
+        const response = await fetch(`${BASE_URL}/cups/${cupId}/remove_team`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({team_id: teamId}),
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to remove team with id=' + teamId + 'from cup with id=' + cupId);
+        }
+
+        return true;
+    } catch (error) {
+        throw error;
+    }
+};

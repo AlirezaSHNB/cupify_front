@@ -9,7 +9,17 @@ function KnockoutForm({ newCupData, handleInputChange, handleSubmit, handleBackS
                     type="checkbox"
                     id="roundTrip"
                     name="round_trip"
-                    checked={newCupData.round_trip}
+                    checked={newCupData.round_trip_knockout}
+                    onChange={handleInputChange}
+                />
+            </div>
+            <div className="input-container">
+                <label htmlFor="roundTripFinal">Round Trip Final</label>
+                <input
+                    type="checkbox"
+                    id="roundTripFinal"
+                    name="round_trip_final"
+                    checked={newCupData.round_trip_final}
                     onChange={handleInputChange}
                 />
             </div>

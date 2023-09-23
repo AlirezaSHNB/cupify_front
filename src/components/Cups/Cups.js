@@ -25,7 +25,9 @@ function Cups({ numToShow }) {
         points_for_win: 0,
         points_for_draw: 0,
         points_for_lost: 0,
-        round_trip: false,
+        round_trip_group: false,
+        round_trip_knockout: false,
+        round_trip_final: false,
         away_goal: false,
         third_place_match: false,
         win_order: ["points", "wins", "rounds_diff", "scores_diff", "face_to_face_match", "rounds", "scores", "red_cards", "yellow_cards", "fouls"]
