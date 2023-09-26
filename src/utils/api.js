@@ -89,6 +89,17 @@ export async function fetchTeams() {
     return response.json();
 }
 
+export async function fetchCupTeams(id) {
+    const response = await fetch(`${BASE_URL}/cups/${id}/teams`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    });
+
+    return response.json();
+}
+
 export async function fetchTeam(id) {
     const response = await fetch(`${BASE_URL}/participants/${id}`, {
         method: 'GET',
@@ -164,6 +175,44 @@ export const createCup = async (cupData) => {
     }
 };
 
+export const fetchSearchedTeams = async (cupId, term) => {
+    try {
+        const response = await fetch(`${BASE_URL}/participants/search_by_cup?cup_id=${cupId}&term=${term}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to search teams by cupId = ' + cupId);
+        }
+
+        return response.json();
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const fetchSearchedPlayers = async (term) => {
+    try {
+        const response = await fetch(`${BASE_URL}/players/search?term=${term}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to search players');
+        }
+
+        return response.json();
+    } catch (error) {
+        throw error;
+    }
+};
+
 export const addTeamToCup = async (cupId, teamId) => {
     try {
         const response = await fetch(`${BASE_URL}/cups/${cupId}/add_team`, {
@@ -196,6 +245,27 @@ export const removeTeamFromCup = async (cupId, teamId) => {
 
         if (!response.ok) {
             throw new Error('Failed to remove team with id=' + teamId + 'from cup with id=' + cupId);
+        }
+
+        return true;
+    } catch (error) {
+        throw error;
+    }
+};
+
+
+export const createTeam = async (teamData) => {
+    try {
+        const response = await fetch(`${BASE_URL}/participants`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(teamData),
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to create team');
         }
 
         return true;

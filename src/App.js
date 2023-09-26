@@ -28,8 +28,6 @@ function App() {
                   setCurrentUser(null);
                 }
             }).catch(error => console.error('Error fetching user data:', error));
-    } else {
-      navigate('/login', { replace:true })
     }
   }, [navigate]);
 
@@ -38,6 +36,7 @@ function App() {
           const response = await logout();
           console.log(response)
           setCurrentUser(null);
+          navigate('/login', { replace:true })
       } catch (error) {
           console.error('Error logging out:', error);
       }

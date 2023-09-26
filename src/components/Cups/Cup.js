@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { fetchCup, fetchTeams, removeTeamFromCup, addTeamToCup } from '../../utils/api';
+import { fetchCup, fetchSearchedTeams, removeTeamFromCup, addTeamToCup } from '../../utils/api';
 import { useNavigate } from 'react-router-dom';
 
 function Cup() {
@@ -16,15 +16,9 @@ function Cup() {
             fetchCup(cupId)
                 .then(data => {
                     setCup(data.cup);
+                    setTeams(data.teams)
                 })
                 .catch(error => console.error('Error fetching cup:', error));
-            
-            // Fetch the current teams for the cup
-            fetchTeams(cupId)
-                .then(data => {
-                    setTeams(data.teams);
-                })
-                .catch(error => console.error('Error fetching teams:', error));
         } else {
             navigate('/login', { replace: true });
         }
@@ -58,11 +52,12 @@ function Cup() {
 
     const handleSearch = (value) => {
         console.log(value)
-        // Call API to search for compatible teams based on searchTerm, cup.mode, and cup.number_of_players
-        // Update the state with the search results
-        // Replace the following line with your actual API call
         const searchResults = [];
-        setTeams(searchResults);
+        fetchSearchedTeams(cupId, value)
+                .then(data => {
+                    console.log(data)
+                })
+                .catch(error => console.error('Error fetching searched teams:', error));
     };
 
     return (
@@ -92,6 +87,7 @@ function Cup() {
                             ))}
                         </tbody>
                     </table>
+                    <br></br>
 
                     <div>
                         <input
@@ -115,6 +111,8 @@ function Cup() {
                             Add New Team
                         </button>
                     </div>
+                    <br></br>
+                    <br></br>
                 </div>
             ) : (
                 <p>Loading cup ...</p>

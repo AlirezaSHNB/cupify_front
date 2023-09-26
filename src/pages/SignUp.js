@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { signUp } from '../utils/api';
+import { useNavigate } from 'react-router-dom';
 
 function SignUp() {
     const [username, setUsername] = useState('');
@@ -7,6 +8,7 @@ function SignUp() {
     const [password, setPassword] = useState('');
     const [gender, setGender] = useState('male');
     const [dateOfBirth, setDateOfBirth] = useState('');
+    const navigate = useNavigate()
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -18,6 +20,7 @@ function SignUp() {
             console.log(response);
             if (response.token) {
                 localStorage.setItem('authToken', response.token);
+                navigate('/')
             }
         } catch (error) {
             console.error('Error signing up:', error);

@@ -100,7 +100,6 @@ function Cups({ numToShow }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(newCupData)
         createCup(newCupData)
             .then(() => {
                 fetchCups()
